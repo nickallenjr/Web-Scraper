@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <title>News Scraper App</title>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	    <script
+	  		src="https://code.jquery.com/jquery-3.2.1.js"
+	  		integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+	  		crossorigin="anonymous">		
+		</script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class='container'>
+				<!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+			    
+			      <!-- Modal content-->
+					<div class="modal-content">
+			        	<div class="modal-header">
+				    		<button type="button" class="close" data-dismiss="modal">&times;</button>          
+				    		<h4 class="modal-title"></h4>
+						</div>
+			        	<div class="modal-body">
+			        		<form>
+			        		  <h4 id='modalTitle'></h4>
+							  <div class="form-group">
+							    <label for="title">Title:</label>
+							    <input type="text" class="form-control" id="title">
+							  </div>
+							  <div class="form-group">
+							    <label for="body">Body:</label>
+							    <input type="text" class="form-control" id="body">
+							  </div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>      
+				</div>
+			</div>
+		</div>
+
+	    {{{body}}}
+
+	</body>
+	<script type='text/javascript'>
+
+		$(document).ready(function() {
+
+			$('#scrapeBtn').on('click', function(event) {
+				event.preventDefault();
+
+				$.ajax('/scrape', {
+					type: 'GET'
+				}).then(function() {
+					
+				});
+
+				setTimeout(function() {
+					location.reload();
+				}, 1200)
+				
+			})
+
+			function openNote() {
+				var header = $(this).attr('data-headline');
+				console.log(header)
+				$('#modalTitle').text(header);
+				var id = $(this).attr('data-id');
+				$.ajax('/article/' + id, {
+					type: 'GET'
+				}).done(function(data) {
+					console.log(data);
+					$('button#submit').remove();
+					$('form').append("<button type='submit' id='submit' class='btn btn-default' data-id='" + id +"'>Submit</button>")
+					$('#title').val('');
+					$('#body').val('');
+					if (data.note) {
+						$('#title').val(data.note.title);
+						$('#body').val(data.note.body);
+					}
+				})
+			};
+
+			function addANote() {
+				var id = $(this).attr('data-id');
+				$.ajax('/note/' + id, {
+					type: 'POST',
+					data: {
+						title: $('#title').val(),
+						body: $('#body').val()
+					}
+				}).done(function(data) {
+					$('#title').val('');
+					$('#body').val('');
+				})
+			}
+			
+
+			$(document).on('click', '#addNote', openNote)
+			$(document).on('click', '#submit', addANote)
+		})
+	</script>
+</html>

@@ -1,0 +1,22 @@
+<div class='jumbotron jumbotron-fluid'>
+	<div class='container'>
+		<img class='header-image' src='http://legacy.shadowandact.com/wp-content/uploads/2017/01/NewsOneNowSplash_rvsd.jpg' alt='newsonenow' style='position: relative; width: 100%;'>
+		<h1 style='position: absolute; top: 358px; color: white;'><span>News One<br /> Now Scraper</span></h1>
+		<button type='button' class='btn btn-default' id='scrapeBtn' style="position: absolute; top: 525px;">Get the news</button>
+	</div>
+</div>
+<div class=container> 
+	<div class='row'>
+{{#each article}}
+		<div class="card col-md-3" style="width: 20rem;">
+		  <a href={{this.link}}><img class="card-img-top" src={{this.image}} alt="Card image cap"></a>
+		  <div class="card-body">
+		    <a href={{this.link}}><h4 class="card-title">{{this.headline}}</h4></a>
+		    <p class="card-text">{{this.summary}}</p>
+		    <a href={{this.link}}>Read More</a>
+		    <button type="button" id='addNote' class="btn btn-info" data-toggle="modal" data-target="#myModal" data-headline={{this.headline}} data-id={{this._id}}>Article Notes</button>
+		  </div>
+		</div>
+{{/each}}
+	</div>
+</div>
