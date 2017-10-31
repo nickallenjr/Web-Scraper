@@ -21,7 +21,8 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/webscrapeapp");
+//mongoose.connect("mongodb://localhost/webscrapeapp");
+mongoose.connect("mongodb://heroku_k839gv0t:hk62n62cdea3vpj3bq3bhl3o57@ds143245.mlab.com:43245/heroku_k839gv0t");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
